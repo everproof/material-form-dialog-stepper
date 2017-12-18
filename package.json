@@ -1,0 +1,96 @@
+{
+  "name": "material-form-dialog-stepper",
+  "version": "0.1.0",
+  "description": "A material-ui Mobile Stepper inside a responsive Dialog that can plug into redux-form.",
+  "main": "lib/index.js",
+  "module": "es/index.js",
+  "scripts": {
+    "build": "npm run build:env && npm run build:es",
+    "build:env": "rimraf lib && rollup -c --environment BUILD:production -o lib/index.js -f umd",
+    "build:es": "rimraf es && rollup -c --environment BUILD:production -o es/index.js -f es",
+    "format": "prettier-eslint --write \"src/**/*.{js,jsx}\"",
+    "flow:coverage": "flow-coverage-report -i 'src/**/*.js' -i 'src/**/*.jsx' -t html -t json -t text --threshold 98",
+    "lint": "eslint src --ext .js,.jsx",
+    "test": "npm run format && npm run lint && flow && npm run flow:coverage && jest --coverage",
+    "test:watch": "jest --watch",
+    "precommit": "npm test",
+    "prepush": "npm run precommit && npm run build"
+  },
+  "author": {
+    "name": "Rhys Gevaux",
+    "email": "rhys@everproof.com",
+    "url": "https://twitter.com/vorksau"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/everproof/material-form-dialog-stepper.git"
+  },
+  "jest": {
+    "collectCoverageFrom": [
+      "**/src/**/*.{js,jsx}",
+      "!**/node_modules/**",
+      "!**/es/**",
+      "!**/coverage/**",
+      "!**/flow-coverage/**",
+      "!**/flow-typed/**",
+      "!**/lib/**"
+    ],
+    "moduleDirectories": [
+      "src",
+      "node_modules"
+    ],
+    "setupFiles": [
+      "./test-setup.js"
+    ]
+  },
+  "dependencies": {
+    "material-ui": "1.0.0-beta.24",
+    "material-ui-icons": "1.0.0-beta.17",
+    "react": "15.6.2",
+    "react-redux": "5.0.6",
+    "redux": "3.7.2",
+    "redux-form": "7.2.0"
+  },
+  "devDependencies": {
+    "babel-cli": "6.26.0",
+    "babel-core": "6.26.0",
+    "babel-eslint": "8.0.3",
+    "babel-jest": "21.2.0",
+    "babel-plugin-external-helpers": "6.22.0",
+    "babel-preset-env": "1.6.1",
+    "babel-preset-flow": "6.23.0",
+    "babel-preset-react": "6.24.1",
+    "babel-preset-stage-0": "6.24.1",
+    "enzyme": "3.2.0",
+    "enzyme-adapter-react-15": "1.0.5",
+    "eslint": "4.13.1",
+    "eslint-config-airbnb": "16.1.0",
+    "eslint-config-prettier": "2.9.0",
+    "eslint-plugin-compat": "2.1.0",
+    "eslint-plugin-import": "2.8.0",
+    "eslint-plugin-jsx-a11y": "6.0.3",
+    "eslint-plugin-react": "7.5.1",
+    "flow-bin": "0.61.0",
+    "flow-coverage-report": "0.4.0",
+    "flow-typed": "2.2.3",
+    "husky": "0.14.3",
+    "jest": "21.2.1",
+    "prettier-eslint-cli": "4.6.1",
+    "react-dom": "15.6.2",
+    "react-test-renderer": "15.6.2",
+    "rimraf": "2.6.2",
+    "rollup": "0.52.2",
+    "rollup-plugin-babel": "3.0.2",
+    "rollup-plugin-commonjs": "8.2.6",
+    "rollup-plugin-node-resolve": "3.0.0"
+  },
+  "peerDependencies": {
+    "material-ui": ">=1.0.0-beta.24",
+    "material-ui-icons": ">=1.0.0-beta.17",
+    "react": ">=15.0.0",
+    "react-redux": ">=5.0.0",
+    "redux": ">=3.0.0",
+    "redux-form": ">=7.0.0"
+  }
+}
