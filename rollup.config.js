@@ -16,7 +16,9 @@ export default {
   ],
   external: [
     'material-ui',
+    'material-ui/Button',
     'material-ui/Dialog',
+    'material-ui/Divider',
     'material-ui/MobileStepper',
     'material-ui/styles',
     'material-ui/transitions/Slide',
@@ -27,7 +29,9 @@ export default {
   ],
   globals: {
     'material-ui': 'MaterialUI',
+    'material-ui/Button': 'Button',
     'material-ui/Dialog': 'Dialog',
+    'material-ui/Divider': 'Divider',
     'material-ui/MobileStepper': 'MobileStepper',
     'material-ui/styles': 'styles',
     'material-ui/transitions/Slide': 'Slide',
