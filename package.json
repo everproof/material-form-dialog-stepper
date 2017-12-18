@@ -9,7 +9,7 @@
     "build:env": "rimraf lib && rollup -c --environment BUILD:production -o lib/index.js -f umd",
     "build:es": "rimraf es && rollup -c --environment BUILD:production -o es/index.js -f es",
     "format": "prettier-eslint --write \"src/**/*.{js,jsx}\"",
-    "flow:coverage": "flow-coverage-report -i 'src/**/*.js' -i 'src/**/*.jsx' -t html -t json -t text --threshold 98",
+    "flow:coverage": "flow-coverage-report -i 'src/**/*.js' -i 'src/**/*.jsx' -t html -t json -t text --threshold 97",
     "lint": "eslint src --ext .js,.jsx",
     "test": "npm run format && npm run lint && flow && npm run flow:coverage && jest --coverage",
     "test:watch": "jest --watch",

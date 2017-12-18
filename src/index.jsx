@@ -2,17 +2,14 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { destroy, hasSubmitSucceeded, isSubmitting, submit } from 'redux-form'
-import { AppBar, Button, Divider, Toolbar, Typography } from 'material-ui'
-import Dialog, {
-  DialogContent,
-  DialogTitle,
-  withMobileDialog,
-} from 'material-ui/Dialog'
-import MobileStepper from 'material-ui/MobileStepper'
+import Divider from 'material-ui/Divider'
+import Dialog, { DialogContent, withMobileDialog } from 'material-ui/Dialog'
 import { withStyles } from 'material-ui/styles'
-import { KeyboardArrowLeft, KeyboardArrowRight } from 'material-ui-icons'
 import Slide from 'material-ui/transitions/Slide'
 import type { Node } from 'react'
+
+import Header from './Header'
+import Stepper from './Stepper'
 
 type Props = {
   children: Array<Node>,
@@ -85,11 +82,7 @@ export default connect(
       breakpoints: { down: (breakpoint: string) => string },
       spacing: { unit: number },
     }) => ({
-      appBar: { position: 'relative' },
       dialogContent: { display: 'flex', flexDirection: 'column' },
-      dialogTitle: { display: 'flex', justifyContent: 'space-between' },
-      header: { flex: 1 },
-      mobileStepper: { flex: '0 0 38px' },
       paper: { width: spacing.unit * 58, height: spacing.unit * 73 },
       fullScreen: { width: '100%', height: '100%' },
       [breakpoints.down('sm')]: {
@@ -177,95 +170,31 @@ export default connect(
           }
         }
 
-        Header = () => {
-          const { SubHeading } = this
-          const Header = () => (
-            <Typography
-              color="inherit"
-              className={this.props.classes.header}
-              gutterBottom
-              noWrap
-              type="title"
-            >
-              {this.props.title}
-            </Typography>
-          )
-
-          const HeaderSteps = () => (
-            <Typography color="inherit">{`Step ${this.state.activeStep +
-              1} of ${this.steps}`}</Typography>
-          )
-
-          return this.props.fullScreen ? (
-            <div>
-              <AppBar className={this.props.classes.appBar}>
-                <Toolbar>
-                  <Header />
-                  <HeaderSteps />
-                </Toolbar>
-              </AppBar>
-            </div>
-          ) : (
-            <DialogTitle disableTypography>
-              <div className={this.props.classes.dialogTitle}>
-                <Header />
-                <HeaderSteps />
-              </div>
-              <SubHeading />
-            </DialogTitle>
-          )
-        }
-
-        SubHeading = () => (
-          <Typography
-            type="subheading"
-            color="inherit"
-            align={
-              this.props.subheadingAlign &&
-              this.props.subheadingAlign(this.state.activeStep)
-            }
-          >
-            {this.props.subheadings[this.state.activeStep]}
-          </Typography>
+        Header = () => (
+          <Header
+            activeStep={this.state.activeStep}
+            fullScreen={this.props.fullScreen}
+            steps={this.steps}
+            subheadingAlign={this.props.subheadingAlign}
+            subheadings={this.props.subheadings}
+            title={this.props.title}
+          />
         )
 
         Stepper = () => (
-          <MobileStepper
+          <Stepper
             activeStep={this.state.activeStep}
-            className={this.props.classes.mobileStepper}
-            position="static"
+            atEnd={this.atEnd}
+            atStart={this.atStart}
+            form={this.form}
+            handleBack={this.handleBack}
+            handleNext={this.handleNext}
             steps={this.steps}
-            type="dots"
-            backButton={
-              <Button dense onClick={this.handleBack}>
-                {!this.atStart && <KeyboardArrowLeft />}
-                {this.atStart ? 'Close' : 'Back'}
-              </Button>
-            }
-            nextButton={
-              <Button
-                dense
-                form={this.form}
-                onClick={this.handleNext}
-                type={this.form ? 'submit' : 'button'}
-              >
-                {(() => {
-                  if (this.atEnd) {
-                    return 'Close'
-                  } else if (this.form) {
-                    return 'Save'
-                  }
-
-                  return 'Next'
-                })()}
-                {!this.atEnd && <KeyboardArrowRight />}
-              </Button>
-            }
           />
         )
 
         render() {
-          const { Header, SubHeading, Stepper } = this
+          const { Header: ThisHeader, Stepper: ThisStepper } = this
 
           return (
             <Slide direction="up" in={this.props.open}>
@@ -280,17 +209,12 @@ export default connect(
                 onClose={this.props.onClose}
                 open={this.props.open}
               >
-                <Header />
-                {this.props.fullScreen && (
-                  <div style={{ padding: '16px 24px 0' }}>
-                    <SubHeading />
-                  </div>
-                )}
+                <ThisHeader />
                 <DialogContent className={this.props.classes.dialogContent}>
                   {this.props.children[this.state.activeStep]}
                 </DialogContent>
                 <Divider />
-                <Stepper />
+                <ThisStepper />
               </Dialog>
             </Slide>
           )
