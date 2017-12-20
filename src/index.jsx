@@ -61,6 +61,8 @@ const submitWasSuccessful = (
   !currentSubmitting &&
   !nextSubmitting
 
+const Transition = (props: Object) => <Slide direction="up" {...props} />
+
 export default connect(
   (state: Object, { forms = [] }: Props) => ({
     submitting: forms.reduce(
@@ -92,6 +94,8 @@ export default connect(
   )(
     withMobileDialog({ breakpoint: 'xs' })(
       class DialogStepper extends Component<Props, State> {
+        static defaultProps = { forms: [] }
+
         state = { activeStep: 0 }
 
         componentWillReceiveProps(nextProps: Props) {
@@ -197,26 +201,25 @@ export default connect(
           const { Header: ThisHeader, Stepper: ThisStepper } = this
 
           return (
-            <Slide direction="up" in={this.props.open}>
-              <Dialog
-                classes={{
-                  fullScreen: this.props.classes.fullScreen,
-                  paper: this.props.classes.paper,
-                }}
-                fullScreen={this.props.fullScreen}
-                ignoreBackdropClick
-                ignoreEscapeKeyUp
-                onClose={this.props.onClose}
-                open={this.props.open}
-              >
-                <ThisHeader />
-                <DialogContent className={this.props.classes.dialogContent}>
-                  {this.props.children[this.state.activeStep]}
-                </DialogContent>
-                <Divider />
-                <ThisStepper />
-              </Dialog>
-            </Slide>
+            <Dialog
+              classes={{
+                fullScreen: this.props.classes.fullScreen,
+                paper: this.props.classes.paper,
+              }}
+              fullScreen={this.props.fullScreen}
+              ignoreBackdropClick
+              ignoreEscapeKeyUp
+              onClose={this.props.onClose}
+              open={this.props.open}
+              transition={Transition}
+            >
+              <ThisHeader />
+              <DialogContent className={this.props.classes.dialogContent}>
+                {this.props.children[this.state.activeStep]}
+              </DialogContent>
+              <Divider />
+              <ThisStepper />
+            </Dialog>
           )
         }
       },
