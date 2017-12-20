@@ -12,6 +12,7 @@ ratings:
   - "**.js"
   - "**.jsx"
 exclude_paths:
+- __tests__/
 - coverage/
 - flow-coverage/
 - flow-typed/
