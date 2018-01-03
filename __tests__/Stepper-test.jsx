@@ -11,7 +11,7 @@ describe('<Stepper />', () => {
   })
 
   test('initial', () => {
-    const wrapper = shallow(<Stepper />)
+    const wrapper = shallow(<Stepper steps={2} />)
       .dive()
       .dive()
 
@@ -19,15 +19,24 @@ describe('<Stepper />', () => {
   })
 
   test('has form', () => {
-    const wrapper = shallow(<Stepper form="1" />)
+    const wrapper = shallow(<Stepper form="1" steps={2} />)
       .dive()
       .dive()
 
     expect(wrapper.props().nextButton.props.type).toEqual('submit')
   })
 
+  test('submitting', () => {
+    const wrapper = shallow(<Stepper form="1" steps={2} submitting />)
+      .dive()
+      .dive()
+
+    expect(wrapper.props().nextButton.props.children[0]).toEqual('Saving')
+    expect(wrapper.props().nextButton.props.disabled).toEqual(true)
+  })
+
   test('has form at end', () => {
-    const wrapper = shallow(<Stepper atEnd form="2" />)
+    const wrapper = shallow(<Stepper atEnd form="2" steps={2} />)
       .dive()
       .dive()
 
