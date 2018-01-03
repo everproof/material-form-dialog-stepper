@@ -1,4 +1,1 @@
-{
-  "presets": [["env", { "modules": false }], "flow", "react", "stage-0"],
-  "env": { "test": { "presets": ["env", "flow", "react", "stage-0"] } }
-}
+{ "presets": ["env", "flow", "react", "stage-0"] }
