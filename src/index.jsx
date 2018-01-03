@@ -30,8 +30,8 @@ type Props = {
   subheadingAlign?: (activeStep: number) => 'left' | 'center' | 'right',
   subheadings: Array<string>,
   submit: (form: string) => void,
-  submitSucceeded?: boolean, // eslint-disable-line react/no-unused-prop-types
-  submitting?: boolean, // eslint-disable-line react/no-unused-prop-types
+  submitSucceeded: Array<?boolean>, // eslint-disable-line react/no-unused-prop-types
+  submitting: Array<?boolean>, // eslint-disable-line react/no-unused-prop-types
   title: string,
 }
 
@@ -43,36 +43,12 @@ const isOpening = ({ open: currentOpen }, { open: nextOpen }) =>
 const isOpen = ({ open: currentOpen }, { open: nextOpen }) =>
   currentOpen && nextOpen
 
-const submitIsSuccessful = (
-  { submitSucceeded: currentSubmitSucceeded, submitting: currentSubmitting },
-  { submitSucceeded: nextSubmitSucceeded, submitting: nextSubmitting },
-) =>
-  !currentSubmitSucceeded &&
-  nextSubmitSucceeded &&
-  currentSubmitting &&
-  !nextSubmitting
-
-const submitWasSuccessful = (
-  { submitSucceeded: currentSubmitSucceeded, submitting: currentSubmitting },
-  { submitSucceeded: nextSubmitSucceeded, submitting: nextSubmitting },
-) =>
-  !currentSubmitSucceeded &&
-  nextSubmitSucceeded &&
-  !currentSubmitting &&
-  !nextSubmitting
-
 const Transition = (props: Object) => <Slide direction="up" {...props} />
 
 export default connect(
   (state: Object, { forms = [] }: Props) => ({
-    submitting: forms.reduce(
-      (result, form) => result || isSubmitting(form)(state),
-      false,
-    ),
-    submitSucceeded: forms.reduce(
-      (result, form) => result || hasSubmitSucceeded(form)(state),
-      false,
-    ),
+    submitSucceeded: forms.map(form => hasSubmitSucceeded(form)(state)),
+    submitting: forms.map(form => isSubmitting(form)(state)),
   }),
   { destroy, submit },
 )(
@@ -102,24 +78,37 @@ export default connect(
           if (isOpening(this.props, nextProps)) {
             this.setState({ activeStep: 0 })
           } else if (isOpen(this.props, nextProps)) {
-            if (submitIsSuccessful(this.props, nextProps)) {
-              this.goToNextStep()
-            } else if (
-              submitWasSuccessful(this.props, nextProps) &&
-              this.previousForm
+            const currentSubmitSucceeded = this.reduceSubmit(
+              this.props.submitSucceeded,
+            )
+
+            const nextSubmitSucceeded = this.reduceSubmit(
+              nextProps.submitSucceeded,
+            )
+
+            const currentSubmitting = this.reduceSubmit(this.props.submitting)
+
+            const nextSubmitting = this.reduceSubmit(nextProps.submitting)
+
+            if (
+              !currentSubmitSucceeded &&
+              nextSubmitSucceeded &&
+              currentSubmitting &&
+              !nextSubmitting
             ) {
-              this.props.destroy(this.previousForm)
+              this.goToNextStep()
             }
           }
         }
 
         shouldComponentUpdate(
-          { fullScreen, open }: Props,
+          { fullScreen, open, submitting }: Props,
           { activeStep }: State,
         ) {
           return (
             this.props.fullScreen !== fullScreen ||
             this.props.open !== open ||
+            this.props.submitting !== submitting ||
             this.state.activeStep !== activeStep
           )
         }
@@ -148,7 +137,11 @@ export default connect(
           if (this.atEnd) {
             this.handleRequestClose()
           } else {
-            this.setState({ activeStep: this.state.activeStep + 1 })
+            this.setState({ activeStep: this.state.activeStep + 1 }, () => {
+              if (this.previousForm) {
+                this.props.destroy(this.previousForm)
+              }
+            })
           }
         }
 
@@ -174,6 +167,11 @@ export default connect(
           }
         }
 
+        reduceSubmit = submitArr =>
+          submitArr
+            .slice(this.state.activeStep)
+            .reduce((result, next) => result || next, false)
+
         Header = () => (
           <Header
             activeStep={this.state.activeStep}
@@ -194,6 +192,7 @@ export default connect(
             handleBack={this.handleBack}
             handleNext={this.handleNext}
             steps={this.steps}
+            submitting={this.props.submitting[this.state.activeStep]}
           />
         )
 
@@ -207,8 +206,8 @@ export default connect(
                 paper: this.props.classes.paper,
               }}
               fullScreen={this.props.fullScreen}
-              ignoreBackdropClick
-              ignoreEscapeKeyUp
+              disableBackdropClick
+              disableEscapeKeyDown
               onClose={this.props.onClose}
               open={this.props.open}
               transition={Transition}
