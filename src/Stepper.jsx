@@ -15,6 +15,7 @@ export default withStyles({ mobileStepper: { flex: '0 0 38px' } })(
     handleBack,
     handleNext,
     steps,
+    submitting,
   }: {
     activeStep: number,
     atEnd: boolean,
@@ -24,6 +25,7 @@ export default withStyles({ mobileStepper: { flex: '0 0 38px' } })(
     handleBack: () => void,
     handleNext: () => void,
     steps: number,
+    submitting?: ?boolean,
   }) => (
     <MobileStepper
       activeStep={activeStep}
@@ -40,6 +42,7 @@ export default withStyles({ mobileStepper: { flex: '0 0 38px' } })(
       nextButton={
         <Button
           dense
+          disabled={submitting}
           form={form}
           onClick={handleNext}
           type={form ? 'submit' : 'button'}
@@ -48,6 +51,10 @@ export default withStyles({ mobileStepper: { flex: '0 0 38px' } })(
             if (atEnd) {
               return 'Close'
             } else if (form) {
+              if (submitting) {
+                return 'Saving'
+              }
+
               return 'Save'
             }
 

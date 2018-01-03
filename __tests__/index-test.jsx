@@ -36,41 +36,25 @@ describe('<DialogStepper />', () => {
     wrapper.setProps({ children, open: true })
     expect(wrapper.state('activeStep')).toBe(0)
 
-    wrapper.setProps({ children, open: true, submitting: true })
+    wrapper.setProps({ children, open: true, submitting: [true, false] })
     expect(wrapper.state('activeStep')).toBe(0)
 
     wrapper.setProps({
       children,
       open: true,
-      submitSucceeded: true,
-      submitting: false,
+      submitSucceeded: [true, false],
+      submitting: [false, false],
     })
+    expect(wrapper.state('activeStep')).toBe(1)
+
+    wrapper.setProps({ children, open: true, submitting: [false, true] })
     expect(wrapper.state('activeStep')).toBe(1)
 
     wrapper.setProps({
       children,
       open: true,
-      submitSucceeded: true,
-      submitting: false,
-    })
-    expect(wrapper.state('activeStep')).toBe(1)
-
-    wrapper.setProps({ children, open: true, submitting: true })
-    expect(wrapper.state('activeStep')).toBe(1)
-
-    wrapper.setProps({
-      children,
-      open: true,
-      submitSucceeded: true,
-      submitting: false,
-    })
-    expect(wrapper.state('activeStep')).toBe(1)
-
-    wrapper.setProps({
-      children,
-      open: true,
-      submitSucceeded: true,
-      submitting: false,
+      submitSucceeded: [false, true],
+      submitting: [false, false],
     })
     expect(wrapper.state('activeStep')).toBe(1)
   })
