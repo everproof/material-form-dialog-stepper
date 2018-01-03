@@ -207,8 +207,8 @@ export default connect(
                 paper: this.props.classes.paper,
               }}
               fullScreen={this.props.fullScreen}
-              ignoreBackdropClick
-              ignoreEscapeKeyUp
+              disableBackdropClick
+              disableEscapeKeyDown
               onClose={this.props.onClose}
               open={this.props.open}
               transition={Transition}
