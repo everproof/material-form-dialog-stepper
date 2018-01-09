@@ -7,6 +7,7 @@ import Dialog, { DialogContent, withMobileDialog } from 'material-ui/Dialog'
 import { withStyles } from 'material-ui/styles'
 import Slide from 'material-ui/transitions/Slide'
 import type { Node } from 'react'
+import type { Destroy, Submit } from 'redux-form/lib/actions.types.js.flow'
 
 import Header from './Header'
 import Stepper from './Stepper'
@@ -22,14 +23,14 @@ type Props = {
     mobileStepper: string,
     paper: string,
   },
-  destroy: (form: string) => void,
+  destroy: Destroy,
   forms?: Array<string>,
   fullScreen: boolean,
   onClose?: (activeStep: number) => void,
   open: boolean,
   subheadingAlign?: (activeStep: number) => 'left' | 'center' | 'right',
   subheadings: Array<string>,
-  submit: (form: string) => void,
+  submit: Submit,
   submitSucceeded: Array<?boolean>, // eslint-disable-line react/no-unused-prop-types
   submitting: Array<?boolean>, // eslint-disable-line react/no-unused-prop-types
   title: string,
@@ -166,7 +167,7 @@ export default connect(
             this.props.onClose(this.state.activeStep)
           }
 
-          this.props.destroy(...this.props.forms)
+          this.props.destroy(...(this.props.forms || []))
         }
 
         reduceSubmit = submitArr =>
