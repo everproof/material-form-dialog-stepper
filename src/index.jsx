@@ -165,6 +165,8 @@ export default connect(
           if (this.props.onClose) {
             this.props.onClose(this.state.activeStep)
           }
+
+          this.props.destroy(...this.props.forms)
         }
 
         reduceSubmit = submitArr =>
