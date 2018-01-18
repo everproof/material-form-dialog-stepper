@@ -13,7 +13,7 @@ import Header from './Header'
 import Stepper from './Stepper'
 
 type Props = {
-  children: Array<Node>,
+  children: Array<Node> | Node,
   classes: {
     appBar: string,
     dialogContent: string,
@@ -131,7 +131,9 @@ export default connect(
         }
 
         get steps(): number {
-          return this.props.children.length
+          return Array.isArray(this.props.children)
+            ? this.props.children.length
+            : 1
         }
 
         goToNextStep = () => {
@@ -217,7 +219,9 @@ export default connect(
             >
               <ThisHeader />
               <DialogContent className={this.props.classes.dialogContent}>
-                {this.props.children[this.state.activeStep]}
+                {Array.isArray(this.props.children)
+                  ? this.props.children[this.state.activeStep]
+                  : this.props.children}
               </DialogContent>
               <Divider />
               <ThisStepper />
