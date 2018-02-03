@@ -80,7 +80,7 @@
     "eslint-plugin-jsx-a11y": "6.0.3",
     "eslint-plugin-react": "7.6.1",
     "flow-bin": "0.63.1",
-    "flow-copy-source": "1.2.1",
+    "flow-copy-source": "1.2.2",
     "flow-coverage-report": "0.4.1",
     "flow-typed": "2.2.3",
     "husky": "0.14.3",
