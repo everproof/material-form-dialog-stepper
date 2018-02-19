@@ -48,14 +48,14 @@ export default withStyles({ mobileStepper: { flex: '0 0 38px' } })(
           type={form ? 'submit' : 'button'}
         >
           {((): string => {
-            if (atEnd) {
-              return 'Close'
-            } else if (form) {
+            if (form) {
               if (submitting) {
                 return 'Saving'
               }
 
               return 'Save'
+            } else if (atEnd) {
+              return 'Close'
             }
 
             return 'Next'
