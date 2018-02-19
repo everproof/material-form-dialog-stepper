@@ -42,4 +42,12 @@ describe('<Stepper />', () => {
 
     expect(wrapper.props().nextButton.props.type).toEqual('submit')
   })
+
+  test('says close at end of form-less steps', () => {
+    const wrapper = shallow(<Stepper atEnd steps={2} />)
+      .dive()
+      .dive()
+
+    expect(wrapper.props().nextButton.props.children[0]).toEqual('Close')
+  })
 })
