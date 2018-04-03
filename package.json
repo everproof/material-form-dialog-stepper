@@ -9,7 +9,7 @@
     "build:lib": "babel -d lib src",
     "build:flow": "flow-copy-source src lib",
     "format": "prettier-eslint --write \"src/**/*.{js,jsx}\"",
-    "flow:coverage": "flow-coverage-report -i 'src/**/*.js' -i 'src/**/*.jsx' -t html -t json -t text --threshold 97",
+    "flow:coverage": "flow-coverage-report -i 'src/**/*.js' -i 'src/**/*.jsx' -t html -t json -t text --threshold 99",
     "lint": "eslint src --ext .js,.jsx",
     "test": "npm run format && npm run lint && flow && npm run flow:coverage && jest --coverage",
     "test:watch": "jest --watch",
