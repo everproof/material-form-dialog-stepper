@@ -34,15 +34,15 @@ export default withStyles({ mobileStepper: { flex: '0 0 38px' } })(
       steps={steps}
       type="dots"
       backButton={
-        <Button dense onClick={handleBack}>
+        <Button size="small" onClick={handleBack}>
           {!atStart && <KeyboardArrowLeft />}
           {atStart ? 'Close' : 'Back'}
         </Button>
       }
       nextButton={
         <Button
-          dense
-          disabled={submitting}
+          size="small"
+          disabled={Boolean(submitting)}
           form={form}
           onClick={handleNext}
           type={form ? 'submit' : 'button'}
