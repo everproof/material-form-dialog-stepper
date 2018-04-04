@@ -39,7 +39,7 @@ export default withStyles({
         className={header}
         gutterBottom
         noWrap
-        type="title"
+        variant="title"
       >
         {title}
       </Typography>
@@ -52,7 +52,7 @@ export default withStyles({
 
     const SubHeading: StatelessFunctionalComponent<*> = () => (
       <Typography
-        type="subheading"
+        variant="subheading"
         color="inherit"
         align={subheadingAlign && subheadingAlign(activeStep)}
       >
